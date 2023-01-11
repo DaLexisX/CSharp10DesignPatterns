@@ -1,8 +1,8 @@
 ﻿namespace Singleton
 {
-    ///
+    /// <summary>
     /// Singleton
-    ///
+    /// </summary>
     public class Logger
     {
         private static Logger _instance;
@@ -25,7 +25,10 @@
         
         }
 
-        ///Singleton Operation
+        /// <summary>
+        /// Singleton Operation
+        /// </summary>
+        /// <param name="message"></param>
         public void Log(string message)
         {
             Console.WriteLine("Written to log: {0}", message);
