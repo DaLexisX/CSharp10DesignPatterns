@@ -5,19 +5,26 @@
     /// </summary>
     public class Logger
     {
-        private static Logger _instance;
+        //Not thread safe
+        //private static Logger _instance;
+
+        //Lazy<T> - thread safe
+        private static readonly Lazy<Logger> _lazyLogger = new Lazy<Logger>(() => new Logger());
+
         private List<string> _logs = new List<string>();
 
         public static Logger Instance
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new Logger();
-                }
+                return _lazyLogger.Value;
 
-                return _instance;
+                //if (_instance == null)
+                //{
+                //    _instance = new Logger();
+                //}
+
+                //return _instance;
             }
         }
 
