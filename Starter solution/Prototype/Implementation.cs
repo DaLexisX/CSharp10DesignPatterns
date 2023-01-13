@@ -1,4 +1,7 @@
-﻿namespace Prototype
+﻿using Newtonsoft.Json;
+using System.Runtime.Serialization.Formatters.Binary;
+
+namespace Prototype
 {
     /// <summary>
     /// Prototype
@@ -7,7 +10,7 @@
     {
         public abstract string Name { get; set; }
 
-        public abstract Person Clone();
+        public abstract Person Clone(bool deepClone);
     }
 
     /// <summary>
@@ -22,8 +25,23 @@
             Name = name;
         }
 
-        public override Person Clone()
+        public override Person Clone(bool deepClone = false)
         {
+            if (deepClone)
+            {
+                //Deserialise has security concerns - no longer use
+                /*var formatter = new BinaryFormatter();
+                using (var stream = new MemoryStream())
+                {
+                    formatter.Serialize(stream, this);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    return (Person)formatter.Deserialize(stream);
+                }*/
+
+                //We'll use a JSON serialiser instead
+                var objectAsJson = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Manager>(objectAsJson);
+            }
             return (Person)MemberwiseClone();
         }
     }
@@ -42,8 +60,23 @@
             Manager = manager;
         }
 
-        public override Person Clone()
+        public override Person Clone(bool deepClone = false)
         {
+            if (deepClone)
+            {
+                //Deserialise has security concerns - no longer use
+                /*var formatter = new BinaryFormatter();
+                using (var stream = new MemoryStream())
+                {
+                    formatter.Serialize(stream, this);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    return (Person)formatter.Deserialize(stream);
+                }*/
+
+                //We'll use a JSON serialiser instead
+                var objectAsJson  = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Employee>(objectAsJson);
+            }
             return (Person)MemberwiseClone();
         }
     }
